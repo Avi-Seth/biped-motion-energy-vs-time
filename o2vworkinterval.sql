@@ -58,7 +58,7 @@ taylor AS (
 ),
 
 inertia AS (
-    SELECT (((0.17*m)/3)*L*L + (0.83)*L*L) AS I
+    SELECT (((0.17*m)/3)*L*L + (0.83*m)*L*L) AS I
     FROM mass, leg
 ),
 
