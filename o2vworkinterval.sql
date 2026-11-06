@@ -53,7 +53,9 @@ angle AS (
 ),
 
 taylor AS (
-    SELECT (theta - theta*theta*theta/6 + theta*theta*theta*theta*theta/120) AS sine, ((3.1415926536/2 - theta) - (3.1415926536/2 - theta)*(3.1415926536/2 - theta)*(3.1415926536/2 - theta)/6 + (3.1415926536/2 - theta)*(3.1415926536/2 - theta)*(3.1415926536/2 - theta)*(3.1415926536/2 - theta)*(3.1415926536/2 - theta)/120) AS step_angle
+    SELECT (theta - theta*theta*theta/6 + theta*theta*theta*theta*theta/120) AS sine,
+    ((3.1415926536/2 - theta) - (3.1415926536/2 - theta)*(3.1415926536/2 - theta)*(3.1415926536/2 - theta)/6 + (3.1415926536/2 - theta)*(3.1415926536/2 - theta)*(3.1415926536/2 - theta)*(3.1415926536/2 - theta)*(3.1415926536/2 - theta)/120) AS cosine
+    ((3.1415926536/2 - theta) - (3.1415926536/2 - theta)*(3.1415926536/2 - theta)*(3.1415926536/2 - theta)/6 + (3.1415926536/2 - theta)*(3.1415926536/2 - theta)*(3.1415926536/2 - theta)*(3.1415926536/2 - theta)*(3.1415926536/2 - theta)/120) AS step_angle
     FROM angle
 ),
 
@@ -68,5 +70,5 @@ ang_acc AS (
 )
 
 SELECT (avg_rate * MIN(t, limiter.interval)/60) AS "Heartbeats",
-       d * (I*alpha/L + m*g*sine) * MIN(t, limiter.interval) / t / 1000 AS "Mechanical Work (kJ)"
+       d * (m*v*v * cosine)/(4*L*sine*sine) * MIN(t, limiter.interval) / t / 1000 AS "Mechanical Work (kJ)"
 FROM avgheartrate, time_total, distance, leg, mass, gravity, inertia, taylor, ang_acc, limiter;
