@@ -3,7 +3,7 @@ WITH
 limiter AS (
     SELECT 281 AS interval  -- change to control time limit between 1 to 283 seconds
 ),
-
+    
 stamp2 AS (
     SELECT CAST("Unix time stamp" AS INTEGER) AS t2
     FROM test1
